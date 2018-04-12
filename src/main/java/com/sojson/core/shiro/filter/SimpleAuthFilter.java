@@ -47,6 +47,7 @@ public class SimpleAuthFilter extends AccessControlFilter {
 
 		HttpServletRequest httpRequest = ((HttpServletRequest)request);
 		String url = httpRequest.getRequestURI();
+		//以/open/开始的url都不拦截
 		if(url.startsWith("/open/")){
 			return Boolean.TRUE;
 		}

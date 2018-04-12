@@ -6,38 +6,25 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import com.sojson.common.model.UUser;
 import com.sojson.common.utils.LoggerUtils;
 import com.sojson.core.shiro.token.manager.TokenManager;
 /**
- * 
- * 开发公司：SOJSON在线工具 <p>
- * 版权所有：© www.sojson.com<p>
- * 博客地址：http://www.sojson.com/blog/  <p>
- * <p>
- * 
- * 判断登录
- * 
- * <p>
- * 
- * 区分　责任人　日期　　　　说明<br/>
- * 创建　周柏成　2016年6月2日 　<br/>
  *
- * @author zhou-baicheng
- * @email  so@sojson.com
- * @version 1.0,2016年6月2日 <br/>
- * 
+ * 判断登录
+ *
  */
 public class LoginFilter  extends AccessControlFilter {
 	final static Class<LoginFilter> CLASS = LoginFilter.class;
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) throws Exception {
-		
-		UUser token = TokenManager.getToken();
-		
+		//获取token
+		UUser token = (UUser)SecurityUtils.getSubject().getPrincipal();
+		//判断token是否为空，并且是登录界面
 		if(null != token || isLoginRequest(request, response)){// && isEnabled()
             return Boolean.TRUE;
         } 
@@ -52,6 +39,7 @@ public class LoginFilter  extends AccessControlFilter {
             
 	}
 
+	//isAccessAllowed方法返回false后执行的方法
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response)
 			throws Exception {
@@ -59,6 +47,4 @@ public class LoginFilter  extends AccessControlFilter {
 		saveRequestAndRedirectToLogin(request, response);
 		return Boolean.FALSE ;
 	}
-	
-
 }

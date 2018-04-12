@@ -54,7 +54,7 @@ public class UserCoreController extends BaseController {
 	 */
 	@RequestMapping(value="index",method=RequestMethod.GET)
 	public ModelAndView userIndex(){
-		
+		System.out.println("---/user/index---");
 		return new ModelAndView("user/index");
 	}
 	
